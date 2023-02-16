@@ -1,0 +1,46 @@
+name: 'Moderne Publish'
+description: 'Publish your LST files to the Moderne Platform'
+inputs:
+  publishUrl:
+    description: 'Artifact Manager URL to publish the -ast.jar files'
+    required: true
+  publishUser:
+    description: 'username for the artifact manager'
+    required: true
+  publishPwd:
+    description: 'password for the artifact manager'
+    required: true
+  mvnPluginVersion:
+    description: 'Moderne Maven plugin version'
+    required: false
+    default: ''
+  gradlePluginVersion:
+    description: 'Moderne Gradle plugin version'
+    required: false
+    default: ''
+  mvnSettingsXML:
+    description: 'Maven settings XML location with the credentials to download dependencies'
+    required: false
+    default: '' 
+  activeStyle:
+    description: 'OpenRewrite formating style for fixes'
+    required: false
+    default: ''
+  jdkVersion:
+    description: 'JDK version to build a Java repository'
+    required: false
+    default: '17'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.publishUrl }}
+    - ${{ inputs.publishUser }}
+    - ${{ inputs.publishPwd }}
+    - ${{ inputs.gradlePluginVersion }}
+    - ${{ inputs.mvnPluginVersion }}
+    - ${{ inputs.mvnSettingsXML }}
+    - ${{ inputs.activeStyle }}
+    - ${{ inputs.jdkVersion }}
+
