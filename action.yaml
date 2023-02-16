@@ -13,11 +13,11 @@ inputs:
   mvnPluginVersion:
     description: 'Moderne Maven plugin version'
     required: false
-    default: ''
+    default: 'LATEST'
   gradlePluginVersion:
     description: 'Moderne Gradle plugin version'
     required: false
-    default: ''
+    default: 'latest.release'
   mvnSettingsXML:
     description: 'Maven settings XML location with the credentials to download dependencies'
     required: false
@@ -30,6 +30,10 @@ inputs:
     description: 'JDK version to build a Java repository'
     required: false
     default: '17'
+  buildAction:
+    description: 'Additional build tool tasks/targets to execute first for Maven and Gradle builds'
+    required: false
+    default: ''
 
 runs:
   using: 'docker'
@@ -43,4 +47,5 @@ runs:
     - ${{ inputs.mvnSettingsXML }}
     - ${{ inputs.activeStyle }}
     - ${{ inputs.jdkVersion }}
+    - ${{ inputs.buildAction }}
 
