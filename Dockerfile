@@ -1,4 +1,4 @@
-FROM moderne/moderne-cli:v.0.0.1
+FROM moderne/moderne-cli:v.0.0.2
 
 RUN mkdir -p /github
 
