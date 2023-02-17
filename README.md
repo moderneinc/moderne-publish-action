@@ -30,9 +30,10 @@ JDK version to build a Java repository. Default value 17
 
 
 ## Example usage
-
+```
 uses: moderneinc/moderne-publish-action@v0.0.1
 with:
   publishUrl: 'https://artifactory.acme.com/artifactory/[REPO]'
   publishUser: ${{ secrets.ARTIFACTORY_USER }}
   publishPwd: ${{ secrets.ARTIFACTORY_PWD }}
+```
