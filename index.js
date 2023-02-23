@@ -93,7 +93,7 @@ try {
   //downloads the CLI using Js to support windows, mac and linux
   downloadFile('https://pkgs.dev.azure.com/moderneinc'+
   '/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
-  + unner.os.toLowerCase() + '/' + version + '/moderne-cli-' + github.runner.os.toLowerCase() + '-' + version, moderneFile)
+  + github.runner.os.toLowerCase() + '/' + version + '/moderne-cli-' + github.runner.os.toLowerCase() + '-' + version, moderneFile)
   .then(
     result => function(result){
       if (github.runner.os.toLowerCase() != 'windows') {
