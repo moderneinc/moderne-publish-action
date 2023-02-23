@@ -120,22 +120,27 @@ try {
   .then(
     result => function(result){
       //runs the CLI
+      console.log("Starting the Moderne CLI")
       if (!isWin) {
          exec.exec('chmod', ['u+x', moderneFile])
            .then( result => {
               exec.exec(moderneFile + ' ' + moderneArgs, null, options)
-                .then(result => {
-                   console.log("Modere CLI existed with " + result)
-                  fs.unlinkSync(moderneFile);
-                 }); 
-              });
-         ;
+                .then(
+                  result => {
+                    console.log("Modere CLI existed with " + result)
+                    fs.unlinkSync(moderneFile);
+                  },
+                  error => core.setFailed(error.message)); 
+              },
+              error => core.setFailed(error.message));
          
       } else {
-        exec.exec(moderneFile + ' ' + moderneArgs, null, options).then(result => {
+        exec.exec(moderneFile + ' ' + moderneArgs, null, options).then(
+          result => {
           console.log("Modere CLI existed with " + result)
           fs.unlinkSync(moderneFile);
-         });
+         }, 
+         error => core.setFailed(error.message));
       }
     },
     error => core.setFailed(error.message));
