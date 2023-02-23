@@ -1,5 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const exec = require('@actions/exec');
+const os = require("os");
 const http = require('http'); // or 'https' for https:// URLs
 const fs = require('fs');
 
@@ -51,7 +53,7 @@ try {
     return;
   }
   
-
+  const isWin = os.platform() === "win32";
   var moderneArgs = 'publish --path ' + workspace + ' --url ' + publishUrl + ' --user ' + publishUser + ' --password ' + publishPwd ;
 
   const mvnPluginVersion = core.getInput('mvnPluginVersion');
@@ -86,28 +88,34 @@ try {
 
   var moderneFile = github.context.workspace + '/moderne-cli';
   
-  if (github.runner.os.toLowerCase() != 'windows') {
+   
+  if (isWin) {
     moderneFile = moderneFile + '.exe';
   }
-
+  const options = {};
+  options.listeners = {
+    stdout: (data) => {
+      console.log(data.toString());
+    },
+    stderr: (data) => {
+      console.log(data.toString());
+    }
+  };
   //downloads the CLI using Js to support windows, mac and linux
   downloadFile('https://pkgs.dev.azure.com/moderneinc'+
   '/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
   + github.runner.os.toLowerCase() + '/' + version + '/moderne-cli-' + github.runner.os.toLowerCase() + '-' + version, moderneFile)
   .then(
     result => function(result){
-      if (github.runner.os.toLowerCase() != 'windows') {
-        const chmodExecSync = require('child_process').execSync;
-        chmodExecSync('chmod u+x ' + moderneFile, { encoding: 'utf-8' });
-      }
-    
       //runs the CLI
-      const modExecSync = require('child_process').execSync;
-      const output = modExecSync(moderneFile + ' ' + moderneArgs, { encoding: 'utf-8' });  // the default is 'buffer'
-      console.log(output);
+      if (!isWin) {
+         exec.exec('chmod', ['u+x', moderneFile]);
+         exec.exec(moderneFile + ' ' + moderneArgs, null, options);
+      } else {
+        exec.exec(moderneFile + ' ' + moderneArgs, null, options);
+      }
     },
-    error => core.setFailed(error.message) );
-  
+    error => core.setFailed(error.message));
  
 } catch (error) {
   core.setFailed(error.message);
