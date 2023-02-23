@@ -18,10 +18,12 @@ function downloadFile(fileUrl, destPath) {
     if (!destPath) return Promise.reject(new Error('Invalid destPath'));
 
     return new Promise(function(resolve, reject) {
+      console.log("Downloading " + fileUrl);
       const file = fs.createWriteStream(destPath);
       const request = https.get(fileUrl, function(response) {
         response.pipe(file);
         file.on("finish", resolve);
+        console.log("File downloaded ");
       });
       request.on('error', reject);
     });
@@ -119,12 +121,21 @@ try {
     result => function(result){
       //runs the CLI
       if (!isWin) {
-         exec.exec('chmod', ['u+x', moderneFile]);
-         exec.exec(moderneFile + ' ' + moderneArgs, null, options);
-         fs.unlinkSync(moderneFile);
+         exec.exec('chmod', ['u+x', moderneFile])
+           .then( result => {
+              exec.exec(moderneFile + ' ' + moderneArgs, null, options)
+                .then(result => {
+                   console.log("Modere CLI existed with " + result)
+                  fs.unlinkSync(moderneFile);
+                 }); 
+              });
+         ;
+         
       } else {
-        exec.exec(moderneFile + ' ' + moderneArgs, null, options);
-        fs.unlinkSync(moderneFile);
+        exec.exec(moderneFile + ' ' + moderneArgs, null, options).then(result => {
+          console.log("Modere CLI existed with " + result)
+          fs.unlinkSync(moderneFile);
+         });
       }
     },
     error => core.setFailed(error.message));
