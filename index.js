@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const exec = require('@actions/exec');
 const os = require("os");
-const http = require('http'); // or 'https' for https:// URLs
+const https = require('https'); // or 'https' for https:// URLs
 const fs = require('fs');
 
 /**
@@ -19,7 +19,7 @@ function downloadFile(fileUrl, destPath) {
 
     return new Promise(function(resolve, reject) {
       const file = fs.createWriteStream(destPath);
-      const request = http.get(fileUrl, function(response) {
+      const request = https.get(fileUrl, function(response) {
         response.pipe(file);
         file.on("finish", resolve);
         response.body.on('error', reject);
@@ -30,7 +30,7 @@ function downloadFile(fileUrl, destPath) {
 try {
   // `who-to-greet` input defined in action metadata file
   const version = core.getInput('version');
-  const workspace = github.context.workspace; 
+  const workspace = process.env.GITHUB_WORKSPACE
 
   const publishUrl = core.getInput('publishUrl');
 
@@ -96,7 +96,7 @@ try {
     moderneArgs = moderneArgs + ' --buildAction ' + buildAction;
   }
 
-  var moderneFile = github.context.workspace + '/moderne-cli';
+  var moderneFile = 'moderne-cli';
   
    
   if (isWin) {
@@ -121,8 +121,10 @@ try {
       if (!isWin) {
          exec.exec('chmod', ['u+x', moderneFile]);
          exec.exec(moderneFile + ' ' + moderneArgs, null, options);
+         fs.unlinkSync(moderneFile);
       } else {
         exec.exec(moderneFile + ' ' + moderneArgs, null, options);
+        fs.unlinkSync(moderneFile);
       }
     },
     error => core.setFailed(error.message));
