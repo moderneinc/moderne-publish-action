@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const fs = require('fs-extra');
-const fetch = require('node-fetch');
+const http = require('http'); // or 'https' for https:// URLs
+const fs = require('fs');
 
 /**
  * Download a file to disk
@@ -16,13 +16,12 @@ function downloadFile(fileUrl, destPath) {
     if (!destPath) return Promise.reject(new Error('Invalid destPath'));
 
     return new Promise(function(resolve, reject) {
-
-        fetch(fileUrl).then(function(res) {
-            var fileStream = fs.createWriteStream(destPath);
-            res.body.on('error', reject);
-            fileStream.on('finish', resolve);
-            res.body.pipe(fileStream);
-        });
+      const file = fs.createWriteStream(destPath);
+      const request = http.get(fileUrl, function(response) {
+        response.pipe(file);
+        file.on("finish", resolve);
+        response.body.on('error', reject);
+      });
     });
 }
 
