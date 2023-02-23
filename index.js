@@ -22,8 +22,8 @@ function downloadFile(fileUrl, destPath) {
       const request = https.get(fileUrl, function(response) {
         response.pipe(file);
         file.on("finish", resolve);
-        response.body.on('error', reject);
       });
+      request.on('error', reject);
     });
 }
 
