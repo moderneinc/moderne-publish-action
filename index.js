@@ -91,19 +91,23 @@ try {
   }
 
   //downloads the CLI using Js to support windows, mac and linux
-  await downloadFile('https://pkgs.dev.azure.com/moderneinc'+
+  downloadFile('https://pkgs.dev.azure.com/moderneinc'+
   '/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
-  + unner.os.toLowerCase() + '/' + version + '/moderne-cli-' + unner.os.toLowerCase() + '-' + version, moderneFile);
-
-  if (runner.os.toLowerCase() != 'windows') {
-    const chmodExecSync = require('child_process').execSync;
-    chmodExecSync('chmod u+x ' + moderneFile, { encoding: 'utf-8' });
-  }
-
-  //runs the CLI
-  const modExecSync = require('child_process').execSync;
-  const output = modExecSync(moderneFile + ' ' + moderneArgs, { encoding: 'utf-8' });  // the default is 'buffer'
-  console.log(output);
+  + unner.os.toLowerCase() + '/' + version + '/moderne-cli-' + unner.os.toLowerCase() + '-' + version, moderneFile)
+  .then(
+    result => function(result){
+      if (runner.os.toLowerCase() != 'windows') {
+        const chmodExecSync = require('child_process').execSync;
+        chmodExecSync('chmod u+x ' + moderneFile, { encoding: 'utf-8' });
+      }
+    
+      //runs the CLI
+      const modExecSync = require('child_process').execSync;
+      const output = modExecSync(moderneFile + ' ' + moderneArgs, { encoding: 'utf-8' });  // the default is 'buffer'
+      console.log(output);
+    },
+    error => core.setFailed(error.message) );
+  
  
 } catch (error) {
   core.setFailed(error.message);
