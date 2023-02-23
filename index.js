@@ -85,17 +85,18 @@ try {
   }
 
   var moderneFile = github.context.workspace + '/moderne-cli';
-  if (runner.os.toLowerCase() != 'windows') {
+  
+  if (github.runner.os.toLowerCase() != 'windows') {
     moderneFile = moderneFile + '.exe';
   }
 
   //downloads the CLI using Js to support windows, mac and linux
   downloadFile('https://pkgs.dev.azure.com/moderneinc'+
   '/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
-  + unner.os.toLowerCase() + '/' + version + '/moderne-cli-' + unner.os.toLowerCase() + '-' + version, moderneFile)
+  + unner.os.toLowerCase() + '/' + version + '/moderne-cli-' + github.runner.os.toLowerCase() + '-' + version, moderneFile)
   .then(
     result => function(result){
-      if (runner.os.toLowerCase() != 'windows') {
+      if (github.runner.os.toLowerCase() != 'windows') {
         const chmodExecSync = require('child_process').execSync;
         chmodExecSync('chmod u+x ' + moderneFile, { encoding: 'utf-8' });
       }
