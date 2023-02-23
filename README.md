@@ -4,6 +4,9 @@ This action publishes the LST files into the Moderne Platform.
 
 ## Inputs
 
+##  version
+Moderne CLI version. Default value "v0.0.14"
+
 ## publishUrl
 **Required** Artifact Manager URL to publish the -ast.jar files.
 
@@ -24,10 +27,6 @@ Maven settings XML location with the credentials to download dependencies. Defau
   
 ## activeStyle:
 OpenRewrite formating style for fixes. Default value ""
-  
-## jdkVersion:
-JDK version to build a Java repository. Default value 17
-
 
 ## Example usage
 ```
