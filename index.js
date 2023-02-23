@@ -54,6 +54,16 @@ try {
   }
   
   const isWin = os.platform() === "win32";
+  const isMac = os.platform() === "darwin";
+
+  var platform = "linux";
+
+  if (isWin) {
+    platform = "windows";
+  } else if (isMac) {
+    platform = "macos";
+  }
+  
   var moderneArgs = 'publish --path ' + workspace + ' --url ' + publishUrl + ' --user ' + publishUser + ' --password ' + publishPwd ;
 
   const mvnPluginVersion = core.getInput('mvnPluginVersion');
@@ -104,7 +114,7 @@ try {
   //downloads the CLI using Js to support windows, mac and linux
   downloadFile('https://pkgs.dev.azure.com/moderneinc'+
   '/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
-  + github.runner.os.toLowerCase() + '/' + version + '/moderne-cli-' + github.runner.os.toLowerCase() + '-' + version, moderneFile)
+  + platform + '/' + version + '/moderne-cli-' + platform + '-' + version, moderneFile)
   .then(
     result => function(result){
       //runs the CLI
