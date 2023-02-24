@@ -50,36 +50,36 @@ async function runModerneCLI() {
     platform = "macos";
   }
   
-  var moderneArgs = 'publish --path ' + workspace + ' --url ' + publishUrl + ' --user ' + publishUser + ' --password ' + publishPwd ;
+  var moderneArgs = 'publish --path=' + workspace + ' --url=' + publishUrl + ' --user=' + publishUser + ' --password=' + publishPwd ;
 
   const mvnPluginVersion = core.getInput('mvnPluginVersion');
 
   if(mvnPluginVersion) {
-    moderneArgs = moderneArgs + ' --mvnPluginVersion ' + mvnPluginVersion;
+    moderneArgs = moderneArgs + ' --mvnPluginVersion=' + mvnPluginVersion;
   }
 
   const gradlePluginVersion = core.getInput('gradlePluginVersion');
 
   if(gradlePluginVersion) {
-    moderneArgs = moderneArgs + ' --gradlePluginVersion ' + gradlePluginVersion;
+    moderneArgs = moderneArgs + ' --gradlePluginVersion=' + gradlePluginVersion;
   }
 
   const mvnSettingsXML = core.getInput('mvnSettingsXML');
 
   if(mvnSettingsXML) {
-    moderneArgs = moderneArgs + ' --mvnSettingsXml ' + mvnSettingsXML;
+    moderneArgs = moderneArgs + ' --mvnSettingsXml=' + mvnSettingsXML;
   }
 
   const activeStyle = core.getInput('activeStyle');
 
   if (activeStyle) {
-    moderneArgs = moderneArgs + ' --activeStyle ' + activeStyle;
+    moderneArgs = moderneArgs + ' --activeStyle=' + activeStyle;
   }
 
   const buildAction = core.getInput('buildAction');
 
   if(buildAction) {
-    moderneArgs = moderneArgs + ' --buildAction ' + buildAction;
+    moderneArgs = moderneArgs + ' --buildAction="' + buildAction + '"';
   }
 
   var moderneFile = 'moderne-cli';
