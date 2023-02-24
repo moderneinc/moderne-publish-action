@@ -95,9 +95,9 @@ async function runModerneCLI() {
   
   await new Promise(function(resolve, reject) {
     console.log("Downloading " + fileURL);
-    const file = fs.createWriteStream(destPath);
+    const file = fs.createWriteStream(moderneFile);
     const request = https.get(fileURL, function(response) {
-      response.pipe(moderneFile);
+      response.pipe(file);
       file.on("finish", resolve);
       console.log("File downloaded ");
     });
