@@ -5,28 +5,6 @@ const os = require("os");
 const https = require('https'); // or 'https' for https:// URLs
 const fs = require('fs');
 
-/**
- * Download a file to disk
- * @example downloadFile('https://orcascan.com', './barcode-tracking.html')
- * @param {string} fileUrl - url of file to download
- * @param {string} destPath - destination path
- * @returns {Promise} resolves once complete, otherwise rejects
- */
-async function downloadFile(fileUrl, destPath) {
-    if (!fileUrl)  throw `Invalid URL. It is empty`;
-    if (!destPath) throw `Invalid Path`;
-
-    await new Promise(function(resolve, reject) {
-      console.log("Downloading " + fileUrl);
-      const file = fs.createWriteStream(destPath);
-      const request = https.get(fileUrl, function(response) {
-        response.pipe(file);
-        file.on("finish", resolve);
-        console.log("File downloaded ");
-      });
-      request.on('error', reject);
-    });
-}
 
 async function run() {
   try {
@@ -112,8 +90,19 @@ async function runModerneCLI() {
     moderneFile = moderneFile + '.exe';
   }
   
-  downloadFile('https://pkgs.dev.azure.com/moderneinc/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
-  + platform + '/' + version + '/moderne-cli-' + platform + '-' + version, moderneFile);
+  const fileURL = 'https://pkgs.dev.azure.com/moderneinc/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
+  + platform + '/' + version + '/moderne-cli-' + platform + '-' + version
+  
+  await new Promise(function(resolve, reject) {
+    console.log("Downloading " + fileUrl);
+    const file = fs.createWriteStream(destPath);
+    const request = https.get(fileUrl, function(response) {
+      response.pipe(moderneFile);
+      file.on("finish", resolve);
+      console.log("File downloaded ");
+    });
+    request.on('error', reject);
+  });
   
   if (!isWin) {
     console.log("chmod u+x " + moderneFile );
