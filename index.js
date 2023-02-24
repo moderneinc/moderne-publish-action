@@ -1,9 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const exec = require('@actions/exec');
+const tc = require('@actions/tool-cache');
 const os = require("os");
-const https = require('https'); // or 'https' for https:// URLs
-const fs = require('fs');
 
 
 async function run() {
@@ -93,20 +92,18 @@ async function runModerneCLI() {
   const fileURL = 'https://pkgs.dev.azure.com/moderneinc/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
   + platform + '/' + version + '/moderne-cli-' + platform + '-' + version
   
-  await new Promise(function(resolve, reject) {
-    console.log("Downloading " + fileURL);
-    const file = fs.createWriteStream(moderneFile);
-    const request = https.get(fileURL, function(response) {
-      response.pipe(file);
-      file.on("finish", resolve);
-      console.log("File downloaded ");
-    });
-    request.on('error', reject);
-  });
+
+  var downloadPath = null;
+
+  try {
+    downloadPath = await tc.downloadTool(fileURL, moderneFile);
+  } catch (error) {
+    throw `Failed to download ModerneCLI: ${error}`;
+  }
   
   if (!isWin) {
-    console.log("chmod u+x " + moderneFile );
-    await exec.exec('chmod', ['u+x', moderneFile]);
+    console.log("chmod u+x " + downloadPath );
+    await exec.exec('chmod', ['u+x', downloadPath]);
   }
 
   const options = {};
@@ -119,7 +116,7 @@ async function runModerneCLI() {
     }
   };
   console.log("Running Moderne CLI ");
-  await exec.exec(moderneFile + ' ' + moderneArgs, null, options);
+  await exec.exec(downloadPath + ' ' + moderneArgs, null, options);
   console.log("Action completed: Moderne CLI process has finished");
 }
 
