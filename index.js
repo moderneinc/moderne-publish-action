@@ -36,7 +36,7 @@ async function run() {
   }
 }
 
-export async function runModerneCLI() {
+async function runModerneCLI() {
   
   const version = core.getInput('version');
   const workspace = process.env.GITHUB_WORKSPACE
