@@ -12,12 +12,11 @@ const fs = require('fs');
  * @param {string} destPath - destination path
  * @returns {Promise} resolves once complete, otherwise rejects
  */
-function downloadFile(fileUrl, destPath) {
+async function downloadFile(fileUrl, destPath) {
+    if (!fileUrl)  throw `Invalid URL. It is empty`;
+    if (!destPath) throw `Invalid Path`;
 
-    if (!fileUrl) return Promise.reject(new Error('Invalid fileUrl'));
-    if (!destPath) return Promise.reject(new Error('Invalid destPath'));
-
-    return new Promise(function(resolve, reject) {
+    await new Promise(function(resolve, reject) {
       console.log("Downloading " + fileUrl);
       const file = fs.createWriteStream(destPath);
       const request = https.get(fileUrl, function(response) {
@@ -29,8 +28,16 @@ function downloadFile(fileUrl, destPath) {
     });
 }
 
-try {
-  // `who-to-greet` input defined in action metadata file
+async function run() {
+  try {
+    await runModerneCLI();
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+}
+
+export async function runModerneCLI() {
+  
   const version = core.getInput('version');
   const workspace = process.env.GITHUB_WORKSPACE
 
@@ -100,10 +107,19 @@ try {
 
   var moderneFile = 'moderne-cli';
   
-   
+    
   if (isWin) {
     moderneFile = moderneFile + '.exe';
   }
+  
+  downloadFile('https://pkgs.dev.azure.com/moderneinc/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
+  + platform + '/' + version + '/moderne-cli-' + platform + '-' + version, moderneFile);
+  
+  if (!isWin) {
+    console.log("chmod u+x " + moderneFile );
+    await exec.exec('chmod', ['u+x', moderneFile]);
+  }
+
   const options = {};
   options.listeners = {
     stdout: (data) => {
@@ -113,38 +129,9 @@ try {
       console.log(data.toString());
     }
   };
-  //downloads the CLI using Js to support windows, mac and linux
-  downloadFile('https://pkgs.dev.azure.com/moderneinc'+
-  '/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
-  + platform + '/' + version + '/moderne-cli-' + platform + '-' + version, moderneFile)
-  .then(
-    result => function(result){
-      //runs the CLI
-      console.log("Starting the Moderne CLI")
-      if (!isWin) {
-         exec.exec('chmod', ['u+x', moderneFile])
-           .then( result => {
-              exec.exec(moderneFile + ' ' + moderneArgs, null, options)
-                .then(
-                  result => {
-                    console.log("Modere CLI existed with " + result)
-                    fs.unlinkSync(moderneFile);
-                  },
-                  error => core.setFailed(error.message)); 
-              },
-              error => core.setFailed(error.message));
-         
-      } else {
-        exec.exec(moderneFile + ' ' + moderneArgs, null, options).then(
-          result => {
-          console.log("Modere CLI existed with " + result)
-          fs.unlinkSync(moderneFile);
-         }, 
-         error => core.setFailed(error.message));
-      }
-    },
-    error => core.setFailed(error.message));
- 
-} catch (error) {
-  core.setFailed(error.message);
+  console.log("Running Moderne CLI ");
+  await exec.exec(moderneFile + ' ' + moderneArgs, null, options);
+  console.log("Action completed: Moderne CLI process has finished");
 }
+
+run();
