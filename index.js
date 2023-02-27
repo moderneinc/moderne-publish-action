@@ -16,7 +16,11 @@ async function run() {
 async function runModerneCLI() {
   
   const version = core.getInput('version');
-  const workspace = process.env.GITHUB_WORKSPACE
+  var workspace = core.getInput('path'); 
+
+  if (!workspace) {
+    workspace = process.env.GITHUB_WORKSPACE;
+  }
 
   const publishUrl = core.getInput('publishUrl');
 
