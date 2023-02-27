@@ -34,6 +34,10 @@ inputs:
     description: 'Additional build tool tasks/targets to execute first for Maven and Gradle builds'
     required: false
     default: ''
+  path:
+    description: 'The path to use. By default the GITHUB_WORKSPACE'
+    required: false
+    default: ''
 runs:
   using: 'node16'
   main: 'index.js'
