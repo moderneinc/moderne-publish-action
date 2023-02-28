@@ -111,14 +111,6 @@ async function runModerneCLI() {
   }
 
   const options = {};
-  options.listeners = {
-    stdout: (data) => {
-      console.log(data.toString());
-    },
-    stderr: (data) => {
-      console.log(data.toString());
-    }
-  };
   console.log("Running Moderne CLI ");
   await exec.exec("./" + downloadPath + ' ' + moderneArgs, null, options);
   console.log("Action completed: Moderne CLI process has finished");
