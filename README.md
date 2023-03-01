@@ -1,38 +1,38 @@
 # Moderne publish action
 
-This action publishes the LST files into the Moderne Platform.
+This action publishes the LST files into the [Moderne](https://www.moderne.io/) Platform. 
 
-## Inputs
+This allows you can apply automatic code refactors across all your repositories using [OpenRewrite](https://docs.openrewrite.org/) recipes. 
 
-##  version
-Moderne CLI version. Default value "v0.0.14"
+## Usage
 
-## publishUrl
-**Required** Artifact Manager URL to publish the -ast.jar files.
-
-## publishUser
-**Required** username for the artifact manager
-
-## publishPwd
-**Required** password for the artifact manager
-
-##  mvnPluginVersion
-Moderne Maven plugin version. Default value ""
-  
-## gradlePluginVersion
-Moderne Gradle plugin version. Default value ""
-  
-## mvnSettingsXML
-Maven settings XML location with the credentials to download dependencies. Default value "" 
-  
-## activeStyle:
-OpenRewrite formating style for fixes. Default value ""
-
-## Example usage
+```yaml
+- uses: moderneinc/moderne-publish-action@v0.0.25
+  with:
+    
+    # Moderne CLI version. Default value "v0.0.14"
+    version: 'v0.0.14'
+    # Artifact Manager URL to publish the -ast.jar files. Required
+    publishUrl: 'https://artifactory.acme.com/artifactory/moderne-ingest'
+    # username for the artifact manager. Required
+    publishUser: ${{ secrets.AST_PUBLISH_USERNAME }}
+    # password for the artifact manager.Required
+    publishPwd: ${{ secrets.AST_PUBLISH_PASSWORD }}
+    # Only for Java projects, where preliminary Maven goals or Gradle tasks that are required before running moderneAST. Optional
+    buildAction: ${{ github.event.client_payload.buildAction }}
+    # The folder that will be processed. By default is ".". Optional
+    path: "."
+    #OpenRewrite formating style for fixes. Optional
+    activeStyle: ""
+    #Moderne Maven plugin version. By default is going to use the LATEST. Optional
+    mvnPluginVersion: ""
+    #Moderne Gradle plugin version. By default is going to use  the latest.integration. Optional
+    gradlePluginVersion
+    # Maven settings XML location with the credentials to download dependencies. Optional
+    mvnSettingsXML: ""
+    # OpenRewrite formating style for fixes. Optional
+    activeStyle: ""
 ```
-uses: moderneinc/moderne-publish-action@v0.0.1
-with:
-  publishUrl: 'https://artifactory.acme.com/artifactory/[REPO]'
-  publishUser: ${{ secrets.ARTIFACTORY_USER }}
-  publishPwd: ${{ secrets.ARTIFACTORY_PWD }}
-```
+    
+    
+   
