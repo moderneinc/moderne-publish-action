@@ -11,9 +11,6 @@ This allows you can apply automatic code refactors across all your repositories 
 ```yaml
 - uses: moderneinc/moderne-publish-action@v0.0.25
   with:
-    # Moderne CLI version. Required
-    version: 'v0.0.14'
-    
     # Artifact Manager URL to publish the -ast.jar files. Required
     publishUrl: 'https://artifactory.acme.com/artifactory/moderne-ingest'
     
@@ -30,7 +27,7 @@ This allows you can apply automatic code refactors across all your repositories 
 - uses: moderneinc/moderne-publish-action@v0.0.25
   with:
     
-    # Moderne CLI version. Required
+    # Moderne CLI version. By default, 'latest'. Required.
     version: 'v0.0.14'
     
     # Artifact Manager URL to publish the -ast.jar files. Required
