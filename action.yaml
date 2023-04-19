@@ -4,7 +4,7 @@ inputs:
   version:
     description: 'Moderne CLI version'
     required: false
-    default: 'v0.0.18'
+    default: 'v0.0.55'
   publishUrl:
     description: 'Artifact Manager URL to publish the -ast.jar files'
     required: true
@@ -26,11 +26,11 @@ inputs:
     description: 'Maven settings XML location with the credentials to download dependencies'
     required: false
     default: ''
-  activeStyle:
+  desiredStyle:
     description: 'OpenRewrite formating style for fixes'
     required: false
     default: ''
-  buildAction:
+  additionalBuildArgs:
     description: 'Additional build tool tasks/targets to execute first for Maven and Gradle builds'
     required: false
     default: ''
