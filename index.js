@@ -80,13 +80,13 @@ async function runModerneCLI() {
 
   const desiredStyle = core.getInput('desiredStyle');
 
-  if (activeStyle) {
+  if (desiredStyle) {
     moderneArgs = moderneArgs + ' --desiredStyle=' + desiredStyle;
   }
 
   const additionalBuildArgs = core.getInput('additionalBuildArgs');
 
-  if(buildAction) {
+  if(additionalBuildArgs) {
     moderneArgs = moderneArgs + ' --additionalBuildArgs="' + additionalBuildArgs + '"';
   }
 
