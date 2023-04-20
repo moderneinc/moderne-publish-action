@@ -4,7 +4,7 @@ inputs:
   version:
     description: 'Moderne CLI version'
     required: false
-    default: 'v0.0.56'
+    default: 'v0.1.0'
   publishUrl:
     description: 'Artifact Manager URL to publish the -ast.jar files'
     required: true
