@@ -9,12 +9,13 @@ async function run() {
   try {
     await runModerneCLI();
   } catch (error) {
+    console.log("Action failed with " + error.message);
     core.setFailed(error.message);
   }
 }
 
 async function runModerneCLI() {
-  
+  console.log("Action moderne CLI starts running");
   const version = core.getInput('version');
   var workspace = core.getInput('path'); 
 
@@ -104,6 +105,8 @@ async function runModerneCLI() {
   } catch (error) {
     throw `Failed to download ModerneCLI: ${error}`;
   }
+  
+  console.log("Moderne CLI downloaded in " + downloadPath);
   
   if (!isWin) {
     console.log("chmod u+x " + downloadPath );
