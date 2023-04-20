@@ -115,8 +115,8 @@ async function runModerneCLI() {
   console.log("Moderne CLI downloaded in " + downloadPath);
   
   if (!isWin) {
-    console.log("chmod u+x " + downloadPath );
-    await exec.exec('chmod', ['u+x', downloadPath]);
+    console.log("chmod u+x " + moderneFile );
+    await exec.exec('chmod', ['u+x', moderneFile]);
   }
 
   const options = {};
