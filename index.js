@@ -84,7 +84,7 @@ async function runModerneCLI() {
   const buildAction = core.getInput('additionalBuildArgs');
 
   if(buildAction) {
-    moderneArgs = moderneArgs + ' --additionalBuildArgs="' + buildAction + '"';
+    moderneArgs = moderneArgs + ' --additionalBuildArgs=' + buildAction + '"';
   }
 
   var moderneFile = 'moderne-cli';
