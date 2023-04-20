@@ -26,6 +26,7 @@ async function runModerneCLI() {
   const publishUrl = core.getInput('publishUrl');
 
   if (!publishUrl) {
+    console.log('The publishUrl should not be empty');
     core.setFailed('The publishUrl should not be empty');
     return;
   }
@@ -33,6 +34,7 @@ async function runModerneCLI() {
   const publishUser = core.getInput('publishUser');
 
   if (!publishUser) {
+    console.log('The publishUser should not be empty');
     core.setFailed('The publishUser should not be empty');
     return;
   }
@@ -40,6 +42,7 @@ async function runModerneCLI() {
   const publishPwd = core.getInput('publishPwd');
 
   if (!publishPwd) {
+    console.log('The publishPwd should not be empty');
     core.setFailed('The publishPwd should not be empty');
     return;
   }
@@ -75,17 +78,19 @@ async function runModerneCLI() {
     moderneArgs = moderneArgs + ' --mvnSettingsXml=' + mvnSettingsXML;
   }
 
-  const activeStyle = core.getInput('desiredStyle');
+  const desiredStyle = core.getInput('desiredStyle');
 
   if (activeStyle) {
-    moderneArgs = moderneArgs + ' --desiredStyle=' + activeStyle;
+    moderneArgs = moderneArgs + ' --desiredStyle=' + desiredStyle;
   }
 
-  const buildAction = core.getInput('additionalBuildArgs');
+  const additionalBuildArgs = core.getInput('additionalBuildArgs');
 
   if(buildAction) {
-    moderneArgs = moderneArgs + ' --additionalBuildArgs=' + buildAction + '"';
+    moderneArgs = moderneArgs + ' --additionalBuildArgs="' + additionalBuildArgs + '"';
   }
+
+  console.log("Moderne CLI args are valid");
 
   var moderneFile = 'moderne-cli';
   
@@ -100,6 +105,7 @@ async function runModerneCLI() {
 
   var downloadPath = null;
 
+  console.log("Downloading Moderne CLI from " + fileURL);
   try {
     downloadPath = await tc.downloadTool(fileURL, moderneFile);
   } catch (error) {
