@@ -24,11 +24,11 @@ This allows you can apply automatic code refactors across all your repositories 
 ### All the options
 
 ```yaml
-- uses: moderneinc/moderne-publish-action@v0.0.27
+- uses: moderneinc/moderne-publish-action@v0.1.0
   with:
     
-    # Moderne CLI version. By default, 'v0.0.18'. Required.
-    version: 'v0.0.18'
+    # Moderne CLI version. A version higher than 'v0.0.55' is required. Required.
+    version: 'v0.0.55'
     
     # Artifact Manager URL to publish the -ast.jar files. Required
     publishUrl: 'https://artifactory.acme.com/artifactory/moderne-ingest'
@@ -40,25 +40,22 @@ This allows you can apply automatic code refactors across all your repositories 
     publishPwd: ${{ secrets.AST_PUBLISH_PASSWORD }}
     
     # Only for Java projects, where preliminary Maven goals or Gradle tasks that are required before running moderneAST. Optional
-    buildAction: ${{ github.event.client_payload.buildAction }}
+    additionalBuildArgs: ""
     
-    # The folder that will be processed. By default is ".". Optional
+    # The folder that will be processed. By default, it is ".". Optional
     path: "."
     
     #OpenRewrite formating style for fixes. Optional
-    activeStyle: ""
+    desiredStyle: ""
     
-    #Moderne Maven plugin version. By default is going to use the LATEST. Optional
+    #Moderne Maven plugin version. By default, it is going to use the LATEST. Optional
     mvnPluginVersion: ""
     
-    #Moderne Gradle plugin version. By default is going to use  the latest.integration. Optional
-    gradlePluginVersion
+    #Moderne Gradle plugin version. By default, it is going to use  the latest.integration. Optional
+    gradlePluginVersion: ""
     
     # Maven settings XML location with the credentials to download dependencies. Optional
     mvnSettingsXML: ""
-    
-    # OpenRewrite formating style for fixes. Optional
-    activeStyle: ""
 ```
     
     
