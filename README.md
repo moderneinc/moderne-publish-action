@@ -57,6 +57,9 @@ This allows you can apply automatic code refactors across all your repositories 
     
     # Maven settings XML location with the credentials to download dependencies. Optional
     mvnSettingsXML: ""
+
+    # If the CLI should be verbose. Optional
+    verbose: "false"
 ```
     
     

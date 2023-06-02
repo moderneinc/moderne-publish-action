@@ -4,7 +4,7 @@ inputs:
   version:
     description: 'Moderne CLI version'
     required: false
-    default: 'v0.1.0'
+    default: 'v0.1.35'
   publishUrl:
     description: 'Artifact Manager URL to publish the -ast.jar files'
     required: true
@@ -38,6 +38,10 @@ inputs:
     description: 'The path to use. By default the GITHUB_WORKSPACE'
     required: false
     default: ''
+  verbose:
+    description: 'If the CLI should be verbose'
+    required: false
+    default: 'false'
 runs:
   using: 'node16'
   main: 'index.js'
