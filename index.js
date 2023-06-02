@@ -90,6 +90,12 @@ async function runModerneCLI() {
     moderneArgs = moderneArgs + ' --additionalBuildArgs="' + additionalBuildArgs + '"';
   }
 
+  const verbose = core.getInput('verbose');
+
+  if (verbose && verbose == 'true') {
+    moderneArgs = moderneArgs + ' --verbose=true';
+  }
+
   console.log("Moderne CLI args are valid");
 
   var moderneFile = 'moderne-cli';
