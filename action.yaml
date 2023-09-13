@@ -5,6 +5,10 @@ inputs:
     description: 'Moderne CLI version'
     required: false
     default: 'v0.1.35'
+  staging:
+    description: 'Whether to use a staging version of the Moderne CLI'
+    required: false
+    default: 'false'
   publishUrl:
     description: 'Artifact Manager URL to publish the -ast.jar files'
     required: true

@@ -17,6 +17,7 @@ async function run() {
 async function runModerneCLI() {
   console.log("Action moderne CLI starts running");
   const version = core.getInput('version');
+  const staging = core.getInput('staging');
   var workspace = core.getInput('path'); 
 
   if (!workspace) {
@@ -92,7 +93,7 @@ async function runModerneCLI() {
 
   const verbose = core.getInput('verbose');
 
-  if (verbose && verbose == 'true') {
+  if (verbose && verbose === 'true') {
     moderneArgs = moderneArgs + ' --verbose=true';
   }
 
@@ -105,7 +106,8 @@ async function runModerneCLI() {
     moderneFile = moderneFile + '.exe';
   }
   
-  const fileURL = 'https://pkgs.dev.azure.com/moderneinc/moderne_public/_packaging/moderne/maven/v1/io/moderne/moderne-cli-'
+  const fileURL = 'https://pkgs.dev.azure.com/moderneinc/moderne_public/_packaging/'
+  + (staging === 'true' ? 'staging/' : '') + 'moderne/maven/v1/io/moderne/moderne-cli-'
   + platform + '/' + version + '/moderne-cli-' + platform + '-' + version
   
 
